@@ -850,39 +850,47 @@ int MdApi::logout()
 	return i;
 };
 
-int MdApi::queryAllTickers(EMT_EXCHANGE_TYPE exchange_id)
+int MdApi::queryAllTickers(int exchange_id)
 {
-	int i = this->api->QueryAllTickers(exchange_id);
+	int i = this->api->QueryAllTickers((EMT_EXCHANGE_TYPE)exchange_id);
 	return i;
 };
 
-int MdApi::queryAllTickersFullInfo(EMT_EXCHANGE_TYPE exchange_id)
+int MdApi::queryAllTickersFullInfo(int exchange_id)
 {
-	int i = this->api->QueryAllTickersFullInfo(exchange_id);
+	int i = this->api->QueryAllTickersFullInfo((EMT_EXCHANGE_TYPE)exchange_id);
 	return i;
 };
 
-int MdApi::queryLatestInfo(char** tickers, int count, EMT_TICKER_TYPE ticker_type, EMT_EXCHANGE_TYPE exchange_id)
+int MdApi::queryLatestInfo(string ticker, int ticker_type, int exchange_id)
 {
-	int i = this->api->QueryLatestInfo(tickers, count, ticker_type, exchange_id);
+	char* buffer = (char*)ticker.c_str();
+	char* myreq[1] = { buffer };
+	int i = this->api->QueryLatestInfo(myreq, 1, (EMT_TICKER_TYPE)ticker_type, (EMT_EXCHANGE_TYPE)exchange_id);
 	return i;
 };
 
-int MdApi::queryMinuteInfo(char** tickers, int count, EMT_TICKER_TYPE ticker_type, EMT_EXCHANGE_TYPE exchange_id)
+int MdApi::queryMinuteInfo(string tickers, int count, int ticker_type, int exchange_id)
 {
-	int i = this->api->QueryMinuteInfo(tickers, count, ticker_type, exchange_id);
+	char* buffer = (char*)tickers.c_str();
+	char* myreq[1] = { buffer };
+	int i = this->api->QueryMinuteInfo(myreq, 1, (EMT_TICKER_TYPE)ticker_type, (EMT_EXCHANGE_TYPE)exchange_id);
 	return i;
 };
 
-int MdApi::queryMinHistoryInfo(char** tickers, int count, int datetime, EMT_TICKER_TYPE ticker_type, EMT_EXCHANGE_TYPE exchange_id)
+int MdApi::queryMinHistoryInfo(string tickers, int count, int datetime, int ticker_type, int exchange_id)
 {
-	int i = this->api->QueryMinHistoryInfo(tickers, count, datetime, ticker_type, exchange_id);
+	char* buffer = (char*)tickers.c_str();
+	char* myreq[1] = { buffer };
+	int i = this->api->QueryMinHistoryInfo(myreq, 1, datetime, (EMT_TICKER_TYPE)ticker_type, (EMT_EXCHANGE_TYPE)exchange_id);
 	return i;
 };
 
-int MdApi::queryTickersPriceInfo(char** tickers, int count, EMT_EXCHANGE_TYPE exchange_id)
+int MdApi::queryTickersPriceInfo(string tickers, int count, int exchange_id)
 {
-	int i = this->api->QueryTickersPriceInfo(tickers, count, exchange_id);
+	char* buffer = (char*)tickers.c_str();
+	char* myreq[1] = { buffer };
+	int i = this->api->QueryTickersPriceInfo(myreq, 1, (EMT_EXCHANGE_TYPE)exchange_id);
 	return i;
 };
 

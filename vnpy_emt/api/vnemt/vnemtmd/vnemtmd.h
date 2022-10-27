@@ -449,17 +449,17 @@ public:
 
 	int logout();
 
-	int queryAllTickers(EMT_EXCHANGE_TYPE exchange_id);
+	int queryAllTickers(int exchange_id);
 
-	int queryAllTickersFullInfo(EMT_EXCHANGE_TYPE exchange_id);
+	int queryAllTickersFullInfo(int exchange_id);
 
-	int queryLatestInfo(char** tickers, int count, EMT_TICKER_TYPE ticker_type, EMT_EXCHANGE_TYPE exchange_id);
+	int queryLatestInfo(string ticker, int ticker_type, int exchange_id);
 
-	int queryMinuteInfo(char** tickers, int count, EMT_TICKER_TYPE ticker_type, EMT_EXCHANGE_TYPE exchange_id);
+	int queryMinuteInfo(string tickers, int count, int ticker_type, int exchange_id);
 
-	int queryMinHistoryInfo(char** tickers, int count, int datetime, EMT_TICKER_TYPE ticker_type, EMT_EXCHANGE_TYPE exchange_id);
+	int queryMinHistoryInfo(string tickers, int count, int datetime, int ticker_type, int exchange_id);
 
-	int queryTickersPriceInfo(char** tickers, int count, EMT_EXCHANGE_TYPE exchange_id);
+	int queryTickersPriceInfo(string tickers, int count, int exchange_id);
 
 
 };

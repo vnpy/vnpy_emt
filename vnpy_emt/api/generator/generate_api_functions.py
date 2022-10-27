@@ -133,7 +133,7 @@ class ApiGenerator:
 
                 for pname, ptype in d.items():
                     print(pname, ptype)
-                    if ptype == "EMTRI" or "EMTRspInfoStruct*":
+                    if ptype == "EMTRI":
                         args_list.append("const dict &error")
                     elif ptype in self.structs:
                         args_list.append("const dict &data")
