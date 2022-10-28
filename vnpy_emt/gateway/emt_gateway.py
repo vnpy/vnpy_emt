@@ -304,7 +304,9 @@ class EmtMdApi(MdApi):
 
     def onSubMarketData(self, data: dict, error: dict, last: bool) -> None:
         """订阅行情回报"""
+        #print(data)
         if not error or not error["error_id"]:
+            #print("订阅成功")
             return
 
         self.gateway.write_error("行情订阅失败", error)
@@ -365,6 +367,7 @@ class EmtMdApi(MdApi):
 
     def onQueryAllTickers(self, data: dict, error: dict, last: bool) -> None:
         """查询合约回报"""
+        #print('已经到了合约回报这里了', data)
         contract: ContractData = ContractData(
             symbol=data["ticker"],
             exchange=EXCHANGE_EMT2VT[data["exchange_id"]],
@@ -388,6 +391,8 @@ class EmtMdApi(MdApi):
                 self.sse_inited = True
             else:
                 self.szse_inited = True
+
+            
 
             # # 如果上海和深圳都查询完成后，再查询期权的信息
             # if self.sse_inited and self.szse_inited:
@@ -413,7 +418,8 @@ class EmtMdApi(MdApi):
 
         if not self.connect_status:
             path: str = str(get_folder_path(self.gateway_name.lower())).encode("GBK")
-            self.createQuoteApi(self.client_id, path, log_level)
+            self.createQuoteApi(self.client_id, path, 1, log_level)#这个1是行情level1 ，2是level2，默认选1
+            #print("已经创建完毕，准备登录")
             self.login_server()
         else:
             self.gateway.write_log("行情接口已登录，请勿重复操作")
@@ -434,7 +440,9 @@ class EmtMdApi(MdApi):
             self.login_status = True
             msg: str = "行情服务器登录成功"
             self.query_contract()
+            #print("已经运行完查询合约函数")
             self.init()
+            #print("已经运行完init函数")
         else:
             error: dict = self.getApiLastError()
             msg: str = f"行情服务器登录失败，原因：{error['error_msg']}"
@@ -450,13 +458,15 @@ class EmtMdApi(MdApi):
         """订阅行情"""
         if self.login_status:
             Emt_exchange: int = EXCHANGE_VT2EMT.get(req.exchange, "")
+            #print("subscribe", self.subscribeMarketData(req.symbol, 1, Emt_exchange))
             self.subscribeMarketData(req.symbol, 1, Emt_exchange)
 
     def query_contract(self) -> None:
         """查询合约信息"""
         for exchange_id in EXCHANGE_EMT2VT.keys():
+            #print("交易所代码是", exchange_id)
+            #print("合约查询函数返回值是", self.queryAllTickers(exchange_id))
             self.queryAllTickers(exchange_id)
-
 
 class EmtTdApi(TdApi):
 
@@ -519,7 +529,7 @@ class EmtTdApi(TdApi):
                 type_map: dict = EQUITY_ORDERTYPE_EMT2VT
             order_type: OrderType = type_map.get(data["price_type"], OrderType.MARKET)
 
-        orderid: str = str(data["order_Emt_id"])
+        orderid: str = str(data["order_emt_id"])
         if orderid not in self.orders:
             order: OrderData = OrderData(
                 symbol=symbol,
@@ -564,7 +574,7 @@ class EmtTdApi(TdApi):
         trade: TradeData = TradeData(
             symbol=symbol,
             exchange=MARKET_EMT2VT[data["market"]],
-            orderid=str(data["order_Emt_id"]),
+            orderid=str(data["order_emt_id"]),
             tradeid=str(data["exec_id"]),
             direction=direction,
             offset=offset,
@@ -604,7 +614,11 @@ class EmtTdApi(TdApi):
         session: int
     ) -> None:
         """查询持仓回报"""
-        if data["market"] == 0:
+
+        # print("data is", data)
+        # print("type of data is", type(data))
+
+        if data["market"] == 100:
             return
 
         position: PositionData = PositionData(
@@ -740,6 +754,7 @@ class EmtTdApi(TdApi):
             self.createTraderApi(self.client_id, path, log_level)
 
             # self.setSoftwareKey(self.software_key)东方财富EMT不需要该接口
+            print(self.subscribePublicTopic(0))
             self.subscribePublicTopic(0)
             self.login_server()
         else:
@@ -766,6 +781,10 @@ class EmtTdApi(TdApi):
             msg: str = f"交易服务器登录失败，原因：{error['error_msg']}"
 
         self.gateway.write_log(msg)
+        #初始化的时候查询委托和成交信息。注意：合约信息在MD查询
+        # self.query_order()
+        # self.query_trade()
+
         self.query_option_info()
 
     def close(self) -> None:
@@ -865,6 +884,12 @@ class EmtTdApi(TdApi):
             self.reqid += 1
             self.queryCreditDebtInfo(self.session_id, self.reqid)
 
+    def query_order(self) -> None:
+        
+        pass
+
+    def query_trade(self) -> None:
+        pass
 
 def get_option_index(strike_price: float, exchange_instrument_id: str) -> str:
     """获取期权索引"""

@@ -403,7 +403,7 @@ public:
 	//req:主动函数的请求字典
 	//-------------------------------------------------------------------------------------
 
-	void createQuoteApi(int client_id, string save_file_path, int log_level);
+	void createQuoteApi(int client_id, string save_file_path, int data_type, int log_level);
 
 	void release();
 

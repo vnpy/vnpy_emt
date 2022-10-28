@@ -461,7 +461,7 @@ void MdApi::OnQueryAllTickers(EMTQuoteStaticInfo* qsi, EMTRspInfoStruct* error_i
 	{
 		data["exchange_id"] = (int)qsi->exchange_id;
 		data["ticker"] = qsi->ticker;
-		data["ticker_name"] = qsi->ticker_name;
+		data["ticker_name"] = toUtf(qsi->ticker_name);
 		data["ticker_type"] = (int)qsi->ticker_type;
 		data["pre_close_price"] = qsi->pre_close_price;
 		data["upper_limit_price"] = qsi->upper_limit_price;
@@ -679,11 +679,11 @@ void MdApi::OnQueryTickersPriceInfo(EMTTickerPriceInfo* price_info, EMTRspInfoSt
 ///主动函数
 ///-------------------------------------------------------------------------------------
 
-void MdApi::createQuoteApi(int client_id, string save_file_path, int log_level)
+void MdApi::createQuoteApi(int client_id, string save_file_path, int data_type, int log_level)
 {
 	if (!this->api)
 	{
-		this->api = QuoteApi::CreateQuoteApi(client_id, save_file_path.c_str(), EMT_LOG_LEVEL(log_level));
+		this->api = QuoteApi::CreateQuoteApi(client_id, save_file_path.c_str(), data_type, EMT_LOG_LEVEL(log_level));
 		this->api->RegisterSpi(this);
 	}
 };
