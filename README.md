@@ -1,4 +1,4 @@
-# VeighNa框架的XTP底层接口
+# VeighNa框架的EMT底层接口
 
 <p align="center">
   <img src ="https://vnpy.oss-cn-shanghai.aliyuncs.com/vnpy-logo.png"/>
@@ -13,7 +13,7 @@
 
 ## 说明
 
-基于中泰证券XTP柜台的2.2.32.2接口封装开发。
+基于东方财富证券EMT柜台的2.7.1行情接口和2.10.0交易接口封装开发。
 
 ## 安装
 
@@ -22,7 +22,7 @@
 直接使用pip命令：
 
 ```
-pip install vnpy_xtp
+pip install vnpy_emt
 ```
 
 
@@ -43,7 +43,7 @@ from vnpy.event import EventEngine
 from vnpy.trader.engine import MainEngine
 from vnpy.trader.ui import MainWindow, create_qapp
 
-from vnpy_xtp import XtpGateway
+from vnpy_emt import EmtGateway
 
 
 def main():
@@ -52,7 +52,7 @@ def main():
 
     event_engine = EventEngine()
     main_engine = MainEngine(event_engine)
-    main_engine.add_gateway(XtpGateway)
+    main_engine.add_gateway(EmtGateway)
     
     main_window = MainWindow(main_engine, event_engine)
     main_window.showMaximized()
