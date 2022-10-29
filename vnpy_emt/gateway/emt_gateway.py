@@ -313,6 +313,7 @@ class EmtMdApi(MdApi):
 
     def onDepthMarketData(self, data: dict) -> None:
         """行情推送回报"""
+        print("到了行情回报")
         timestamp: str = str(data["data_time"])
         dt: datetime = datetime.strptime(timestamp, "%Y%m%d%H%M%S%f")
         dt: datetime = dt.replace(tzinfo=CHINA_TZ)
@@ -458,7 +459,7 @@ class EmtMdApi(MdApi):
         """订阅行情"""
         if self.login_status:
             Emt_exchange: int = EXCHANGE_VT2EMT.get(req.exchange, "")
-            #print("subscribe", self.subscribeMarketData(req.symbol, 1, Emt_exchange))
+            print("subscribe", self.subscribeMarketData(req.symbol, 1, Emt_exchange))
             self.subscribeMarketData(req.symbol, 1, Emt_exchange)
 
     def query_contract(self) -> None:
@@ -651,9 +652,9 @@ class EmtTdApi(TdApi):
         )
         account.available = round(data["buying_power"], 2)
 
-        if data["account_type"] == 1:
+        if data["account_type"] == 1:#信用账户
             self.margin_trading = True
-        elif data["account_type"] == 2:
+        elif data["account_type"] == 2:#衍生品账户
             account.frozen = account.balance - account.available - data["security_asset"]
             account.frozen = round(account.frozen, 2)
             self.option_trading = True
@@ -662,6 +663,7 @@ class EmtTdApi(TdApi):
 
     def onQueryOptionAuctionInfo(self, data: dict, error: dict, reqid: int, last: bool, session: int) -> None:
         """查询期权合约细节回报"""
+        print("到了期权回报函数")
         if not data or not data["ticker"]:
             return
 
@@ -754,7 +756,7 @@ class EmtTdApi(TdApi):
             self.createTraderApi(self.client_id, path, log_level)
 
             # self.setSoftwareKey(self.software_key)东方财富EMT不需要该接口
-            print(self.subscribePublicTopic(0))
+            # print(self.subscribePublicTopic(0))
             self.subscribePublicTopic(0)
             self.login_server()
         else:
@@ -785,7 +787,7 @@ class EmtTdApi(TdApi):
         # self.query_order()
         # self.query_trade()
 
-        self.query_option_info()
+        self.query_option_info()#这个函数用测试账号没用，返回6077，经查，不支持该项业务
 
     def close(self) -> None:
         """关闭连接"""
@@ -795,6 +797,7 @@ class EmtTdApi(TdApi):
     def query_option_info(self) -> None:
         """查询期权信息"""
         self.reqid += 1
+        #print("期权信息查询", self.queryOptionAuctionInfo({}, self.session_id, self.reqid))
         self.queryOptionAuctionInfo({}, self.session_id, self.reqid)
 
     def send_order(self, req: OrderRequest) -> str:

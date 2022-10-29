@@ -50,6 +50,7 @@ void MdApi::OnDepthMarketData(EMTMarketDataStruct* market_data, int64_t bid1_qty
 {
 	gil_scoped_acquire acquire;
 	dict data;
+	cout << "ondepth" << endl;
 	if (market_data)
 	{
 		data["exchange_id"] = (int)market_data->exchange_id;
@@ -93,8 +94,26 @@ void MdApi::OnDepthMarketData(EMTMarketDataStruct* market_data, int64_t bid1_qty
 		data["warrant"] = market_data->warrant;
 		data["opt"] = market_data->opt;
 		data["data_type"] = (int)market_data->data_type;
+
+		pybind11::list ask;
+		pybind11::list bid;
+		pybind11::list ask_qty;
+		pybind11::list bid_qty;
+
+		for (int i = 0; i < 10; i++)
+		{
+			ask.append(market_data->ask[i]);
+			bid.append(market_data->bid[i]);
+			ask_qty.append(market_data->ask_qty[i]);
+			bid_qty.append(market_data->bid_qty[i]);
+		}
+
+		data["ask"] = ask;
+		data["bid"] = bid;
+		data["bid_qty"] = bid_qty;
+		data["ask_qty"] = ask_qty;
 	}
-	this->onDepthMarketData(data, bid1_qty, bid1_count, max_bid1_count, ask1_qty, ask1_count, max_ask1_count);
+	this->onDepthMarketData(data);
 };
 
 void MdApi::OnTickByTick(EMTTickByTickStruct* tbt_data)
@@ -943,11 +962,11 @@ public:
 		}
 	};
 
-	void onDepthMarketData(const dict& data, int64_t bid1_qty[], int32_t bid1_count, int32_t max_bid1_count, int64_t ask1_qty[], int32_t ask1_count, int32_t max_ask1_count) override
+	void onDepthMarketData(const dict& data) override
 	{
 		try
 		{
-			PYBIND11_OVERLOAD(void, MdApi, onDepthMarketData, data, bid1_qty, bid1_count, max_bid1_count, ask1_qty, ask1_count, max_ask1_count);
+			PYBIND11_OVERLOAD(void, MdApi, onDepthMarketData, data);
 		}
 		catch (const error_already_set& e)
 		{

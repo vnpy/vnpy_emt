@@ -336,7 +336,7 @@ public:
 
 	virtual void onIndexData(const dict& data) {};
 
-	virtual void onDepthMarketData(const dict& data, int64_t bid1_qty[], int32_t bid1_count, int32_t max_bid1_count, int64_t ask1_qty[], int32_t ask1_count, int32_t max_ask1_count) {};
+	virtual void onDepthMarketData(const dict& data) {};
 
 	virtual void onTickByTick(const dict& data) {};
 
