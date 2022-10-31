@@ -1,0 +1,1 @@
+recursive-include vnpy_emt *.dll *.so *.pyd *.h *.cpp *.lib
