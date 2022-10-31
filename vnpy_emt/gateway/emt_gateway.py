@@ -626,7 +626,7 @@ class EmtTdApi(TdApi):
         """查询资金回报"""
         account: AccountData = AccountData(
             accountid=self.userid,
-            balance=round(data["total_asset"], 2),
+            balance=round(data["buying_power"], 2),
             frozen=round(data["withholding_amount"], 2),
             gateway_name=self.gateway_name
         )
