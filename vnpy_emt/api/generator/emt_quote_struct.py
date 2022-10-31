@@ -203,4 +203,3 @@ EMTTickerPriceInfo = {
     "ticker": "char",
     "last_price": "double",
 }
-

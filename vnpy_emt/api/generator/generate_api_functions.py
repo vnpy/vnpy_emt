@@ -96,8 +96,6 @@ class ApiGenerator:
             return {}
         args = args_str.split(",")
 
-
-
         d = {}
         for arg in args:
 
@@ -109,11 +107,9 @@ class ApiGenerator:
             if "=" in words[-2]:
                 ptype = words[-4].replace("*", "")
                 name = words[-3].replace("*", "")
-
             elif "*" in words[-2]:
                 ptype = words[-2].replace("*", "")
                 name = words[-1].replace("*", "")
-            
             else:
                 name = words[-1].replace("*", "")
 
