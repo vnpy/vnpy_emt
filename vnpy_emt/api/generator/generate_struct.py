@@ -96,7 +96,7 @@ class StructGenerator:
             if "[" in pname:
                 pname = pname[:pname.index("[")]
 
-            new_line = f'\t"{pname}": "{ptype}",\n'
+            new_line = f'    "{pname}": "{ptype}",\n'
             self.f_py.write(new_line)
 
 
