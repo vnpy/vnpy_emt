@@ -50,7 +50,6 @@ void MdApi::OnDepthMarketData(EMTMarketDataStruct* market_data, int64_t bid1_qty
 {
 	gil_scoped_acquire acquire;
 	dict data;
-	cout << "ondepth" << endl;
 	if (market_data)
 	{
 		data["exchange_id"] = (int)market_data->exchange_id;
@@ -89,12 +88,11 @@ void MdApi::OnDepthMarketData(EMTMarketDataStruct* market_data, int64_t bid1_qty
 		data["duration_after_sell"] = market_data->duration_after_sell;
 		data["num_bid_orders"] = market_data->num_bid_orders;
 		data["num_ask_orders"] = market_data->num_ask_orders;
-		data["bond"] = market_data->bond;
+		/*data["bond"] = market_data->bond;
 		data["fund"] = market_data->fund;
 		data["warrant"] = market_data->warrant;
-		data["opt"] = market_data->opt;
+		data["opt"] = market_data->opt;*/
 		data["data_type"] = (int)market_data->data_type;
-
 		pybind11::list ask;
 		pybind11::list bid;
 		pybind11::list ask_qty;
