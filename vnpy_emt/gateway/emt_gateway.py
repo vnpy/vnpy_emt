@@ -29,6 +29,7 @@ from vnpy.trader.utility import get_folder_path, round_to, ZoneInfo
 
 from ..api import MdApi, TdApi
 
+
 # 交易所映射
 MARKET_EMT2VT: Dict[int, Exchange] = {
     1: Exchange.SZSE,
@@ -200,16 +201,12 @@ class EmtGateway(BaseGateway):
         trader_port: int = int(setting["交易端口"])
         quote_protocol: str = setting["行情协议"]
         log_level: int = LOGLEVEL_VT2EMT[setting["日志级别"]]
-        # software_key: str = setting["授权码"]
 
         self.md_api.connect(
             userid, password, client_id, quote_ip,
             quote_port, quote_protocol, log_level
         )
-        # self.td_api.connect(
-        #     userid, password, client_id, trader_ip,
-        #     trader_port, software_key, log_level
-        # )
+
         self.td_api.connect(
             userid, password, client_id, trader_ip,
             trader_port, log_level
@@ -599,6 +596,9 @@ class EmtTdApi(TdApi):
         session: int
     ) -> None:
         """查询持仓回报"""
+        if not data:
+            return
+
         if data["market"] == 100:
             return
 
@@ -610,7 +610,7 @@ class EmtTdApi(TdApi):
             frozen=data["total_qty"] - data["sellable_qty"],
             price=data["avg_price"],
             pnl=data["unrealized_pnl"],
-            yd_volume=data["yesterday_position"],
+            yd_volume=data["sellable_qty"],
             gateway_name=self.gateway_name
         )
         self.gateway.on_position(position)
@@ -760,7 +760,6 @@ class EmtTdApi(TdApi):
             msg: str = f"交易服务器登录失败，原因：{error['error_msg']}"
 
         self.gateway.write_log(msg)
-
         self.query_option_info()
 
     def close(self) -> None:
