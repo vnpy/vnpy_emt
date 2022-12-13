@@ -1,4 +1,4 @@
-# VeighNa框架的EMT底层接口
+# VeighNa框架的东方财富证券EMT交易接口
 
 <p align="center">
   <img src ="https://vnpy.oss-cn-shanghai.aliyuncs.com/vnpy-logo.png"/>
@@ -32,7 +32,7 @@ pip install vnpy_emt
 pip install .
 ```
 
-使用源代码安装时需要进行C++编译，因此在执行上述命令之前请确保已经安装了【Visual Studio（Windows）】或者【GCC（Linux）】编译器。
+使用源代码安装时需要进行C++编译，因此在执行上述命令之前请确保已经安装了【Visual Studio（Windows）】编译器。
 
 ## 使用
 
