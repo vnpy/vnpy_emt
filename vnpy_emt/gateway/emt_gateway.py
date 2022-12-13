@@ -599,6 +599,9 @@ class EmtTdApi(TdApi):
         session: int
     ) -> None:
         """查询持仓回报"""
+        if not data:
+            return
+
         if data["market"] == 100:
             return
 
