@@ -610,7 +610,7 @@ class EmtTdApi(TdApi):
             frozen=data["total_qty"] - data["sellable_qty"],
             price=data["avg_price"],
             pnl=data["unrealized_pnl"],
-            yd_volume=data["yesterday_position"],
+            yd_volume=data["sellable_qty"],
             gateway_name=self.gateway_name
         )
         self.gateway.on_position(position)
