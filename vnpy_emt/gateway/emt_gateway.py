@@ -200,16 +200,12 @@ class EmtGateway(BaseGateway):
         trader_port: int = int(setting["交易端口"])
         quote_protocol: str = setting["行情协议"]
         log_level: int = LOGLEVEL_VT2EMT[setting["日志级别"]]
-        # software_key: str = setting["授权码"]
 
         self.md_api.connect(
             userid, password, client_id, quote_ip,
             quote_port, quote_protocol, log_level
         )
-        # self.td_api.connect(
-        #     userid, password, client_id, trader_ip,
-        #     trader_port, software_key, log_level
-        # )
+
         self.td_api.connect(
             userid, password, client_id, trader_ip,
             trader_port, log_level
