@@ -29,6 +29,7 @@ from vnpy.trader.utility import get_folder_path, round_to, ZoneInfo
 
 from ..api import MdApi, TdApi
 
+
 # 交易所映射
 MARKET_EMT2VT: Dict[int, Exchange] = {
     1: Exchange.SZSE,
@@ -759,7 +760,6 @@ class EmtTdApi(TdApi):
             msg: str = f"交易服务器登录失败，原因：{error['error_msg']}"
 
         self.gateway.write_log(msg)
-
         self.query_option_info()
 
     def close(self) -> None:
